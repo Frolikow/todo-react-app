@@ -1,0 +1,21 @@
+.todo-component {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding-right: 80px;
+  min-height: 40px;
+  width: 500px;
+  border: 2px solid #777;
+  border-radius: 5px;
+  background-color: #aaa;
+  cursor: pointer;
+
+  &_completed {
+    border-color: #0f0;
+    background-color: #080;
+  }
+
+  &__checkbox {
+    margin: 0 10px;
+  }
+}
