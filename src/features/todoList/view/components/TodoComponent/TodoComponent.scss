@@ -1,21 +1,43 @@
 .todo-component {
+  position: relative;
   display: flex;
   align-items: center;
   margin-bottom: 5px;
-  padding-right: 80px;
+  padding: 5px 80px 5px 5px;
   min-height: 40px;
   width: 500px;
   border: 2px solid #777;
   border-radius: 5px;
-  background-color: #aaa;
+  background-color: #aaa6;
   cursor: pointer;
 
   &_completed {
     border-color: #0f0;
-    background-color: #080;
+    background-color: #0a06;
   }
 
-  &__checkbox {
-    margin: 0 10px;
+  &__icons {
+    position: absolute;
+    right: 0%;
+    display: flex;
+  }
+
+  &__pen {
+    margin-right: 10px;
+    width: 20px;
+  }
+
+  &__trash {
+    margin-right: 10px;
+    width: 20px;
+  }
+
+  &__pen,
+  &__trash {
+    fill: #000;
+
+    &:hover {
+      fill: red;
+    }
   }
 }

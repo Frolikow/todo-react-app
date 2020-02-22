@@ -40,6 +40,7 @@ class TodoListComponent extends React.Component<State> {
         <input type="text" className={b('input')} />
         {todoList && todoList.map(todo => (
           <TodoComponent
+            key={todo.id}
             todo={todo}
             onChange={(event: React.MouseEvent<HTMLDivElement>) => this.handleTodoStatusChange(event)}
           />
@@ -67,5 +68,3 @@ class TodoListComponent extends React.Component<State> {
 }
 
 export { TodoListComponent as TodoList };
-
-// нужно продумать как изменять состояние каждой тудушки при клике по ней
