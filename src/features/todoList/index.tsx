@@ -1,4 +1,4 @@
 import * as namespace from './namespace';
 
 export { namespace };
-export { Entry } from './entry';
+export { Entry, entry } from './entry';

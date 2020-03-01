@@ -1,17 +1,17 @@
 import { makeFeatureEntry } from 'shared/helpers/makeFeatureEntry';
 
-import { actionCreators/* , selectors, reducer, getSaga */ } from './redux';
+import { actionCreators, selectors , reducer/* , getSaga  */} from './redux';
 import * as containers from './view/containers';
 
 const entry = makeFeatureEntry({
   containers,
   actionCreators,
-  // selectors,
-  // reduxEntry: {
-  //   reducers: { repositoriesSearch: reducer },
+  selectors,
+  reduxEntry: {
+    reducers: { todoList: reducer },
   //   sagas: [getSaga],
-  // },
+  },
 });
 
 type Entry = typeof entry;
-export { Entry };
+export { Entry, entry };

@@ -1,12 +1,12 @@
 import * as NS from '../../namespace';
 import { initial } from '../initial';
 
-function uiReducer(state: NS.IReduxState['ui'] = initial.ui, action: NS.IAction): NS.IReduxState['ui'] {
+function uiReducer(state: NS.IReduxState['data'] = initial.data, action: NS.IAction): NS.IReduxState['data'] {
   switch (action.type) {
-    case 'REPOSITORIES_SEARCH:SEARCH_REPOSITORIES_SUCCESS': {
-      const { totalPages, page } = action.payload;
-      return { ...state, repositoriesSearchPaginationState: { totalPages, page } };
-    }
+    // case 'REPOSITORIES_SEARCH:SEARCH_REPOSITORIES_SUCCESS': {
+    //   const { totalPages, page } = action.payload;
+    //   return { ...state, repositoriesSearchPaginationState: { totalPages, page } };
+    // }
     default:
       return state;
   }

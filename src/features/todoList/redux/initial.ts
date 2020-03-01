@@ -1,19 +1,10 @@
-import { initialCommunicationField, initialPaginationState } from 'shared/constants';
-
 import { IReduxState } from '../namespace';
+import { initiaTodoList } from 'shared/constants';
 
 const initial: IReduxState = {
-  todoList: [],
   data: {
-    foundRepositories: [],
-    totalResults: 0,
-  },
-  communication: {
-    searchRepositories: initialCommunicationField,
-  },
-  ui: {
-    repositoriesSearchPaginationState: initialPaginationState,
-  },
+    todoList: initiaTodoList,
+  }
 };
 
 export { initial };

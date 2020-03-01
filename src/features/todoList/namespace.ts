@@ -1,48 +1,42 @@
-import { IRepository } from 'shared/types/models';
-import {
-  IRepositoriesSearchFilters, IRepositoriesSearchResults, IPaginatedSearchRequest,
-} from 'shared/types/githubSearch';
-import { IPaginationState } from 'shared/types/common';
-import { ICommunication, IPlainFailAction, IAction, IPlainAction } from 'shared/types/redux';
+import { IPlainFailAction, IAction, IPlainAction } from 'shared/types/redux';
+import { Todo } from './view/containers/TodoList/TodoList';
 
 export interface IReduxState {
-  todoList: Todo[],
   data: {
-    foundRepositories: IRepository[];
-    totalResults: number;
-  };
-  communication: {
-    searchRepositories: ICommunication;
-  };
-  ui: {
-    repositoriesSearchPaginationState: IPaginationState;
-  };
+    todoList: Todo[]
+  }
 }
 
-export type Todo = {
-  id: number,
-  value: string,
-  isCompleted: boolean,
-};
+export type LoadTodoList = IPlainAction<'TODO_LIST:LOAD_TODO_LIST'>;
+export type LoadTodoListSuccess = IPlainAction<'TODO_LIST:LOAD_TODO_LIST_SUCCESS'>;
+export type LoadTodoListFail = IPlainFailAction<'TODO_LIST:LOAD_TODO_LIST_FAIL'>;
 
-export interface IRepositoriesSearchFormFields extends IRepositoriesSearchFilters {
-  searchString: string;
-}
+export type ChangeStatusTodo = IPlainAction<'TODO_LIST:CHANGE_STATUS_TODO'>;
+export type ChangeStatusTodoSuccess = IPlainAction<'TODO_LIST:CHANGE_STATUS_TODO_SUCCESS'>;
+export type ChangeStatusTodoFail = IPlainFailAction<'TODO_LIST:CHANGE_STATUS_TODO_FAIL'>;
 
-export type ISearchRepositoriesPayload = IPaginatedSearchRequest<IRepositoriesSearchFormFields>;
-export interface ISearchRepositoriesSuccessPayload extends IRepositoriesSearchResults {
-  page: number;
-}
+export type AddTodo = IAction<'TODO_LIST:ADD_TODO', Todo>;
+export type AddTodoSuccess = IPlainAction<'TODO_LIST:ADD_TODO_SUCCESS'>;
+export type AddTodoFail = IPlainFailAction<'TODO_LIST:ADD_TODO_FAIL'>;
 
-export type IResetSearchResults = IPlainAction<'REPOSITORIES_SEARCH:RESET_SEARCH_RESULTS'>;
+export type ChangeTodo = IPlainAction<'TODO_LIST:CHANGE_TODO'>;
+export type ChangeTodoSuccess = IPlainAction<'TODO_LIST:CHANGE_TODO_SUCCESS'>;
+export type ChangeTodoFail = IPlainFailAction<'TODO_LIST:CHANGE_TODO_FAIL'>;
 
-export type ISearchRepositories = IAction<'REPOSITORIES_SEARCH:SEARCH_REPOSITORIES', ISearchRepositoriesPayload>;
-export type ISearchRepositoriesSuccess = IAction<'REPOSITORIES_SEARCH:SEARCH_REPOSITORIES_SUCCESS', ISearchRepositoriesSuccessPayload
->;
-export type ISearchRepositoriesFail = IPlainFailAction<'REPOSITORIES_SEARCH:SEARCH_REPOSITORIES_FAIL'>;
+export type RemoveTodo = IPlainAction<'TODO_LIST:REMOVE_TODO'>;
+export type RemoveTodoSuccess = IPlainAction<'TODO_LIST:REMOVE_TODO_SUCCESS'>;
+export type RemoveTodoFail = IPlainFailAction<'TODO_LIST:REMOVE_TODO_FAIL'>;
 
 export type IAction =
-  | ISearchRepositories
-  | ISearchRepositoriesSuccess
-  | ISearchRepositoriesFail
-  | IResetSearchResults;
+  | LoadTodoList
+  | LoadTodoListSuccess
+  | LoadTodoListFail
+  | AddTodo
+  | AddTodoSuccess
+  | AddTodoFail
+  | ChangeTodo
+  | ChangeTodoSuccess
+  | ChangeTodoFail
+  | RemoveTodo
+  | RemoveTodoSuccess
+  | RemoveTodoFail;

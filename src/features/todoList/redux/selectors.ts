@@ -1,28 +1,12 @@
-// import { IAppReduxState } from 'shared/types/app';
-// import { IRepository } from 'shared/types/models';
-// import { IPaginationState } from 'shared/types/common';
-// import { ICommunication } from 'shared/types/redux';
+import { IAppReduxState } from 'shared/types/app';
 
-// import * as NS from '../namespace';
+import * as NS from '../namespace';
+import { Todo } from '../view/containers/TodoList/TodoList';
 
-// function selectFeatureState(state: IAppReduxState): NS.IReduxState {
-//   return state.repositoriesSearch;
-// }
+function selectFeatureState(state: IAppReduxState): NS.IReduxState {
+  return state.todoList;
+}
 
-// export function selectFoundRepositories(state: IAppReduxState): IRepository[] {
-//   return selectFeatureState(state).data.foundRepositories;
-// }
-
-// export function selectCommunication(
-//   state: IAppReduxState, name: keyof NS.IReduxState['communication'],
-// ): ICommunication {
-//   return selectFeatureState(state).communication[name];
-// }
-
-// export function selectRepositoriesSearchPaginationState(state: IAppReduxState): IPaginationState {
-//   return selectFeatureState(state).ui.repositoriesSearchPaginationState;
-// }
-
-// export function selectTotalResults(state: IAppReduxState): number {
-//   return selectFeatureState(state).data.totalResults;
-// }
+export function selectTodoList(state: IAppReduxState): Todo[] {
+  return selectFeatureState(state).data.todoList;
+}
