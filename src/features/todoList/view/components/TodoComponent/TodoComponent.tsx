@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import block from 'bem-cn';
 import { autobind } from 'core-decorators';
 import InlineSVG from 'svg-inline-react';
@@ -30,8 +30,6 @@ class TodoComponent extends React.Component<Props, State> {
     todo: this.props.todo.value,
   }
 
-  private todoContentRef = createRef<HTMLDivElement>();
-
   render() {
     const { todo } = this.props;
     const { isContentEditable } = this.state;
@@ -39,16 +37,14 @@ class TodoComponent extends React.Component<Props, State> {
     return (
       <div id={`${todo.id}`} className={b({ completed: todo.isCompleted })}>
         <div className={b('checkbox', { checked: todo.isCompleted })} onClick={this.handleTodoStatusClick} />
-        <div
+        <p
           contentEditable={isContentEditable}
           suppressContentEditableWarning
           className={b('content', { editable: isContentEditable })}
-          onInput={this.handleContentChange}
-          ref={this.todoContentRef}
-          tabIndex={0}
+          onBlur={this.handleContentChange}
         >
           {this.state.todo}
-        </div>
+        </p>
         <div className={b('icons')}>
           <InlineSVG
             className={b('pen', { edited: isContentEditable })}
@@ -74,7 +70,7 @@ class TodoComponent extends React.Component<Props, State> {
   }
 
   @autobind
-  private handleContentChange(event: React.ChangeEvent<HTMLDivElement>) {
+  private handleContentChange(event: React.ChangeEvent<HTMLParagraphElement>) {
     this.setState({ todo: event.target.innerText });
   }
 

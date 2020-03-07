@@ -11,12 +11,18 @@ import { IAppReduxState } from 'shared/types/app';
 
 const b = block('todo-list');
 
+type IActionProps = typeof mapDispatch;
+
+type IProps = IStateProps & IActionProps;
+
 type State = {
   todoList?: Todo[],
-  newTodoText?: string,
+  newTodoText: string | null,
 };
 
-type IStateProps = any
+type IStateProps = {
+  todoList?: Todo[],
+}
 
 export type Todo = {
   id: number,
@@ -33,23 +39,23 @@ const mapDispatch = {
 
 function mapState(state: IAppReduxState): IStateProps {
   return {
-    stateTodoList: selectors.selectTodoList(state),
+    todoList: selectors.selectTodoList(state),
   };
 }
 
-class TodoListComponent extends React.Component<IStateProps, State> {
+class TodoListComponent extends React.Component<IProps, State> {
   public state: State = {
-    todoList: this.props.stateTodoList,
-    newTodoText: '',
+    newTodoText: null,
   };
 
   public render() {
-    const { todoList } = this.state;
+    const { todoList } = this.props;
+    const { newTodoText } = this.state;
     return (
       <div className={b()}>
         <h1 className={b('header')}>TODO LIST</h1>
         <div className={b('new-todo')} >
-          <input type="text" className={b('input')} onChange={this.handleInputChange} value={this.state.newTodoText} />
+          <input type="text" className={b('input')} onChange={this.handleInputChange} value={newTodoText ? newTodoText : ''} />
           <button className={b('add-todo')} onClick={this.handleAddTodoClick}>Add Todo</button>
         </div>
         <div>
@@ -75,55 +81,29 @@ class TodoListComponent extends React.Component<IStateProps, State> {
   @autobind
   private handleAddTodoClick() {
     const { addTodo } = this.props;
-    const { newTodoText, todoList } = this.state;
+    const { newTodoText } = this.state;
     if (newTodoText && newTodoText.length > 0) {
-      const newTodo = {
-        id: todoList && todoList[todoList.length - 1].id || 0,
-        value: newTodoText,
-        isCompleted: false,
-      }
-      this.setState((prevState: State) => ({
-        todoList: [
-          ...prevState.todoList,
-          newTodo,
-        ],
-        newTodoText: '',
-      }))
-      this.state.todoList && addTodo(newTodo);
+      addTodo(newTodoText);
+      this.setState({ newTodoText: '' });
     }
   }
 
   @autobind
   private handleTodoStatusChange(todoId: number) {
     const { changeStatusTodo } = this.props;
-    const { todoList } = this.state;
-    const newTodoList = todoList && todoList.map(todo => {
-      if (todo.id === todoId) return { ...todo, isCompleted: !todo.isCompleted };
-      return todo;
-    });
-    this.setState({ todoList: newTodoList });
-    changeStatusTodo();
+    changeStatusTodo(todoId);
   }
 
   @autobind
   private handleTodoChange(todoId: number, todoValue: string) {
     const { changeTodo } = this.props;
-    const { todoList } = this.state;
-    const newTodoList = todoList && todoList.map(todo => {
-      if (todo.id === todoId) return { ...todo, value: todoValue };
-      return todo;
-    });
-    this.setState({ todoList: newTodoList });
-    changeTodo();
+    changeTodo({ id: todoId, value: todoValue });
   }
 
   @autobind
   private handleTodoRemove(itemId: number) {
     const { removeTodo } = this.props;
-    this.setState((prevState: State) => ({
-      todoList: prevState.todoList && prevState.todoList.filter(todo => todo.id !== itemId)
-    }))
-    removeTodo();
+    removeTodo(itemId);
   }
 }
 
