@@ -16,12 +16,11 @@ type IActionProps = typeof mapDispatch;
 type IProps = IStateProps & IActionProps;
 
 type State = {
-  todoList?: Todo[],
   newTodoText: string | null,
 };
 
 type IStateProps = {
-  todoList?: Todo[],
+  todoList: Todo[],
 }
 
 export type Todo = {
@@ -31,6 +30,7 @@ export type Todo = {
 };
 
 const mapDispatch = {
+  loadTodoList: actionCreators.loadTodoList,
   addTodo: actionCreators.addTodo,
   changeStatusTodo: actionCreators.changeStatusTodo,
   changeTodo: actionCreators.changeTodo,
@@ -47,6 +47,10 @@ class TodoListComponent extends React.Component<IProps, State> {
   public state: State = {
     newTodoText: null,
   };
+
+  componentDidMount() {
+    this.props.loadTodoList()
+  }
 
   public render() {
     const { todoList } = this.props;
@@ -80,10 +84,15 @@ class TodoListComponent extends React.Component<IProps, State> {
 
   @autobind
   private handleAddTodoClick() {
-    const { addTodo } = this.props;
+    const { addTodo, todoList } = this.props;
     const { newTodoText } = this.state;
     if (newTodoText && newTodoText.length > 0) {
-      addTodo(newTodoText);
+      const newTodo = {
+        id: todoList.length ? todoList[todoList.length - 1].id + 1 : 1,
+        value: newTodoText,
+        isCompleted: false
+      }
+      addTodo(newTodo);
       this.setState({ newTodoText: '' });
     }
   }
