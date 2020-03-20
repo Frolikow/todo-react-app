@@ -8,6 +8,7 @@
     "dev": "npm run watch:dev",
     "prod": "npm run watch:prod",
     "deploy:gh-pages": "npm run build:gh-pages && gh-pages -d build",
+    "deploy:firebase": "firebase deploy",
     "watch:dev": "better-npm-run watch:dev",
     "watch:prod": "better-npm-run watch:prod",
     "server:dev": "better-npm-run server:dev",
