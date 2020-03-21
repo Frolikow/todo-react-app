@@ -27,6 +27,7 @@ declare module 'postcss-scss';
 
 declare module 'webpack-isomorphic-dev-middleware';
 declare module 'thread-loader';
+declare module 'svg-inline-react';
 declare module 'doiuse';
 declare module 'stylelint';
 declare module 'favicons-webpack-plugin';

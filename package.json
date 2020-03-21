@@ -8,6 +8,7 @@
     "dev": "npm run watch:dev",
     "prod": "npm run watch:prod",
     "deploy:gh-pages": "npm run build:gh-pages && gh-pages -d build",
+    "deploy:firebase": "firebase deploy",
     "watch:dev": "better-npm-run watch:dev",
     "watch:prod": "better-npm-run watch:prod",
     "server:dev": "better-npm-run server:dev",
@@ -183,6 +184,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
+    "firebase": "^7.11.0",
     "fork-ts-checker-webpack-plugin": "^1.5.1",
     "gh-pages": "^2.0.1",
     "html-webpack-plugin": "^3.2.0",
@@ -208,6 +210,7 @@
     "yo": "^2.0.5"
   },
   "dependencies": {
+    "@firebase/app": "^0.5.6",
     "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.4.3",
     "@types/autoprefixer": "^9.1.1",
@@ -281,6 +284,8 @@
     "reselect": "^4.0.0",
     "sass-loader": "^7.1.0",
     "serialize-javascript": "^1.5.0",
+    "svg-inline-loader": "^0.8.2",
+    "svg-inline-react": "^3.2.0",
     "thread-loader": "^2.1.3",
     "ts-loader": "^5.3.3",
     "ts-node": "^8.4.1",

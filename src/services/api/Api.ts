@@ -1,65 +1,63 @@
-import { autobind } from 'core-decorators';
+import app from "firebase/app";
+import "firebase/firestore";
 
-import {
-  IUsersSearchFilters, IRepositoriesSearchFilters, IUsersSearchResults, IRepositoriesSearchResults,
-} from 'shared/types/githubSearch';
+import { Todo } from 'features/todoList/view/containers/TodoList/TodoList';
 
-import { SearchUserResponse, IDetailedServerUser, SearchRepositoriesResponse } from './types';
-import {
-  constructUsersSearchQuery, getTotalPagesFromLinkHeader,
-  constructRepositoriesSearchQuery, getTotalResults,
-} from './helpers';
-import { convertUser, convertUserDetails, convertRepository } from './converters';
-import { HttpActions } from './HttpActions';
+app.initializeApp({
+  apiKey: "AIzaSyBKk9fwz4vQlwIYpakZuXL4MV7llHtKRwE",
+  authDomain: "frol-todo.firebaseapp.com",
+  databaseURL: "https://frol-todo.firebaseio.com",
+  projectId: "frol-todo",
+  storageBucket: "frol-todo.appspot.com",
+  messagingSenderId: "78939945334",
+  appId: "1:78939945334:web:fc635634ed57b844d6a257"
+});
+
+const db = app.firestore();
 
 class Api {
-  private actions: HttpActions;
-
-  private headers = {
-    get: {
-      Accept: 'application/vnd.github.v3+json',
-    },
-  };
-
-  constructor() {
-    this.actions = new HttpActions('https://api.github.com/', this.headers);
+  public async loadTodoList() {
+    let todoList: Todo[] = [];
+    await db.collection("todoList").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc: any) => {
+        todoList.push(doc.data())
+      });
+    });
+    return todoList;
   }
 
-  @autobind
-  public async searchUsers(
-    searchString: string, filters: IUsersSearchFilters, page: number,
-  ): Promise<IUsersSearchResults> {
-    const URL = `/search/users?q=${constructUsersSearchQuery(searchString, filters, page)}`;
-    const response = await this.actions.get<SearchUserResponse>(URL);
-    const users = response.data.items;
-    const totalPages = getTotalPagesFromLinkHeader(response.headers.link);
-    return {
-      totalPages,
-      data: users.map(convertUser),
-      totalResults: getTotalResults(response.data.total_count),
-    };
+  public async getTodo(payload: number) {
+    let todo: Todo | null = null;
+    await db.collection("todoList").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc: any) => {
+        if (doc.data().id === payload) todo = doc.data();
+      });
+    });
+    return todo;
   }
 
-  @autobind
-  public async loadUserDetails(username: string) {
-    const URL = `/users/${username}`;
-    const response = await this.actions.get<IDetailedServerUser>(URL);
-    return convertUserDetails(response.data);
+  public async changeStatusTodo(todo: Todo) {
+    await db.collection("todoList").doc(`${todo.id}`).set({
+      ...todo,
+      isCompleted: !todo.isCompleted,
+    });
   }
 
-  @autobind
-  public async searchRepositories(
-    searchString: string, options: IRepositoriesSearchFilters, page: number,
-  ): Promise<IRepositoriesSearchResults> {
-    const URL = `/search/repositories?q=${constructRepositoriesSearchQuery(searchString, options, page)}`;
-    const response = await this.actions.get<SearchRepositoriesResponse>(URL);
-    const repositories = response.data.items;
-    const totalPages = getTotalPagesFromLinkHeader(response.headers.link);
-    return {
-      totalPages,
-      data: repositories.map(convertRepository),
-      totalResults: getTotalResults(response.data.total_count),
-    };
+  public async addTodo(payload: Todo) {
+    db.collection("todoList").doc(`${payload.id}`).set({
+      ...payload,
+    });
+  }
+
+  public async removeTodo(payload: number) {
+    db.collection("todoList").doc(`${payload}`).delete();
+  }
+
+  public async changeTodo(payload: Pick<Todo, 'id' | 'value'>, todo: Todo) {
+    db.collection("todoList").doc(`${payload.id}`).set({
+      ...todo,
+      value: payload.value,
+    });
   }
 }
 

@@ -133,12 +133,17 @@ export const getCommonRules: (type: BuildType) => webpack.Rule[] = type => [
   },
   {
     test: /\.(png|svg)/,
+    exclude: [/-inline\.svg$/],
     loader: 'url-loader',
     options: {
       name: 'images/[name].[ext]',
       limit: 10000,
     },
   },
+  {
+    test: p => /-inline\.svg$/.test(p),
+    loader: 'svg-inline-loader'
+}
 ];
 
 const commonScssLoaders: webpack.Loader[] = [
